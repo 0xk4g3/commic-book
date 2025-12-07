@@ -21,23 +21,34 @@ export class StoryGeneratorService {
             .map((char) => `${char.name}: ${char.description}`)
             .join(', ');
 
-        // Construct the panel prompt with emphasis on oriental train aesthetic
+        // Construct the panel prompt with STRICT style consistency requirements
         const prompt = `
-Comic book panel ${panel.number} of 4,
-Scene: ${panel.scene},
-Characters: ${characterDescriptions},
-Setting: ${story.setting},
-IMPORTANT: Must show ORIENTAL LUXURY TRAIN interior with vintage classic design, NOT modern metro. Features: ornate arabesque patterns, carved wood panels, brass fixtures, rich velvet fabrics, geometric Islamic art, traditional Middle Eastern decorative elements,
-Action: ${panel.action},
-Mood: ${panel.mood},
-Cultural element: ${panel.tradition},
-Art style: ${this.artStyle},
-Train Style: vintage luxury oriental train with traditional Arabic architectural details, reminiscent of classic Orient Express but with Middle Eastern aesthetic,
-Colors: vibrant and detailed with warm desert tones and rich jewel colors,
-Season: winter in UAE with cool comfortable weather,
-Composition: ${this.selectComposition()},
-Quality: high quality professional comic book art, detailed faces, consistent character appearance,
-No text, no speech bubbles, no watermarks
+PANEL ${panel.number} OF 4 - MIRBAD EXPRESS TRAIN STORY
+Scene: ${panel.scene}
+Characters: ${characterDescriptions}
+Setting: ${story.setting}
+
+VISUAL STYLE REQUIREMENTS (MUST BE IDENTICAL ACROSS ALL 4 PANELS):
+- Art Style: Studio Ghibli anime style, warm and magical atmosphere
+- Character Design: EXACT SAME character appearance in all panels - same face, same hair, same clothing, same proportions
+- Train Interior: Luxurious vintage oriental train with ornate arabesque patterns, carved wood panels, brass fixtures, rich velvet fabrics in deep jewel tones, geometric Islamic art motifs
+- Color Palette: Warm desert tones (amber, gold, terracotta) mixed with rich jewel colors (deep blues, emerald greens, ruby reds), consistent lighting
+- Lighting: Soft warm golden lighting from ornate brass lamps and fixtures
+- Quality: High detail professional anime art, cinematic composition, consistent artistic style
+
+ACTION & MOOD:
+- Action: ${panel.action}
+- Emotional Tone: ${panel.mood}
+- Cultural Element: ${panel.tradition}
+
+STRICT PROHIBITIONS:
+- NO TEXT of any kind - no speech bubbles, no captions, no word balloons, no dialogue boxes
+- NO WORDS or letters visible anywhere in the image
+- NO watermarks, logos, or signatures
+- Visual storytelling only through character expressions and actions
+
+Train must show vintage luxury oriental design with Middle Eastern aesthetic, NOT modern metro.
+Winter season atmosphere with cool comfortable weather visible through windows.
     `.trim();
 
         return prompt;

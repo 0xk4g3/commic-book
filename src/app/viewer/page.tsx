@@ -7,6 +7,8 @@ import jsPDF from 'jspdf';
 import JSZip from 'jszip';
 import { Comic } from '@/types/comic';
 import Header from '@/components/Header';
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
 
 export default function ViewerPage() {
     const router = useRouter();
@@ -173,41 +175,44 @@ export default function ViewerPage() {
 
                 {/* Action Buttons */}
                 <div className="mb-8 flex flex-wrap justify-center gap-4">
-                    <button
+                    <Button
                         onClick={handleSave}
                         disabled={saved}
-                        className={`flex items-center space-x-2 rounded-lg px-6 py-3 font-bold text-white shadow-lg transition-smooth hover:scale-105 ${saved
-                            ? 'bg-green-600'
-                            : 'bg-gradient-to-r from-desert-gold to-winter-blue'
-                            }`}
+                        variant={saved ? 'success' : 'secondary'}
+                        size="md"
                     >
                         <Save className="h-5 w-5" />
-                        <span>{saved ? 'Saved!' : 'Save to Library'}</span>
-                    </button>
+                        {saved ? 'Saved!' : 'Save to Library'}
+                    </Button>
 
-                    <button
+                    <Button
                         onClick={handleDownloadPDF}
-                        className="flex items-center space-x-2 rounded-lg bg-red-600 px-6 py-3 font-bold text-white shadow-lg transition-smooth hover:scale-105 hover:bg-red-700"
+                        variant="danger"
+                        size="md"
                     >
                         <Download className="h-5 w-5" />
-                        <span>Download PDF</span>
-                    </button>
+                        Download PDF
+                    </Button>
 
-                    <button
+                    <Button
                         onClick={handleDownloadZIP}
-                        className="flex items-center space-x-2 rounded-lg bg-blue-600 px-6 py-3 font-bold text-white shadow-lg transition-smooth hover:scale-105 hover:bg-blue-700"
+                        variant="primary"
+                        size="md"
+                        className="bg-blue-600 hover:bg-blue-700"
                     >
                         <Download className="h-5 w-5" />
-                        <span>Download ZIP</span>
-                    </button>
+                        Download ZIP
+                    </Button>
 
-                    <button
+                    <Button
                         onClick={() => router.push('/library')}
-                        className="flex items-center space-x-2 rounded-lg bg-purple-600 px-6 py-3 font-bold text-white shadow-lg transition-smooth hover:scale-105 hover:bg-purple-700"
+                        variant="primary"
+                        size="md"
+                        className="bg-purple-600 hover:bg-purple-700"
                     >
                         <LibraryIcon className="h-5 w-5" />
-                        <span>View Library</span>
-                    </button>
+                        View Library
+                    </Button>
                 </div>
 
                 {/* Comic Panels */}
@@ -228,6 +233,13 @@ export default function ViewerPage() {
                                         className="h-auto w-full rounded-lg"
                                     />
 
+                                    {/* Scene Description Overlay */}
+                                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/70 to-transparent p-4 rounded-b-lg">
+                                        <p className="text-white text-sm font-medium leading-relaxed">
+                                            {panel.scene}
+                                        </p>
+                                    </div>
+
                                     {/* Download Button Overlay */}
                                     <button
                                         onClick={() => handleDownloadPanel(panel)}
@@ -241,24 +253,10 @@ export default function ViewerPage() {
                                     <p className="mb-1 font-bold text-gray-800">
                                         Panel {panel.number}
                                     </p>
-                                    <p className="mb-2 text-sm text-gray-600">{panel.scene}</p>
                                     <p className="text-xs text-gray-500">
-                                        Tradition: {panel.tradition}
+                                        Cultural Value: {panel.tradition}
                                     </p>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                {/* Characters Info */}
-                <div className="mx-auto mt-12 max-w-4xl rounded-2xl bg-white p-6 shadow-lg">
-                    <h2 className="mb-4 text-2xl font-bold text-gray-800">Characters</h2>
-                    <div className="space-y-4">
-                        {comic.characters.map((char, index) => (
-                            <div key={index} className="border-l-4 border-desert-gold pl-4">
-                                <h3 className="font-bold text-gray-800">{char.name}</h3>
-                                <p className="text-sm text-gray-600">{char.description}</p>
                             </div>
                         ))}
                     </div>

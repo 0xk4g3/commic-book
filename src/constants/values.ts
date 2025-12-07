@@ -104,12 +104,12 @@ export const PANEL_COMPOSITIONS = [
 
 // App Configuration
 export const APP_CONFIG = {
-    appName: 'UAE Winter Tales',
-    appNameAr: 'حكايات الشتاء الإماراتية',
-    tagline: 'Create Educational Comic Books',
+    appName: 'Mirbad Express',
+    appNameAr: 'ميرباد إكسبرس',
+    tagline: 'Adventures to the Ski Point',
     maxSavedComics: 50,
-    panelsPerStory: 6,
-    version: '2.0.0',
+    panelsPerStory: 4,
+    version: '3.0.0',
 } as const;
 
 // Image Generation Parameters

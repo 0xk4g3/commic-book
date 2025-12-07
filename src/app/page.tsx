@@ -1,124 +1,86 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { VALUES } from '@/constants/values';
-import { StoryValue } from '@/types/story';
-import Header from '@/components/Header';
+import { Sparkles, Train, BookOpen, Palette, Heart } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
 
 export default function HomePage() {
     const router = useRouter();
 
-    const handleValueSelect = (valueId: StoryValue) => {
-        router.push(`/generator?value=${valueId}`);
-    };
-
-    const handleSurpriseMe = () => {
-        const randomValue = VALUES[Math.floor(Math.random() * VALUES.length)];
-        router.push(`/generator?value=${randomValue.id}`);
-    };
-
     return (
-        <div className="min-h-screen">
-            <Header currentPage="home" />
+        <div className="min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 relative overflow-hidden">
+            {/* Animated background elements */}
+            <div className="absolute inset-0 overflow-hidden">
+                <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-gradient-to-br from-blue-500/20 to-transparent rounded-full blur-3xl animate-pulse"></div>
+                <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-gradient-to-tl from-purple-500/20 to-transparent rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+            </div>
 
-            <main className="container mx-auto px-4 py-8">
-                {/* Hero Section */}
-                <div className="mb-12 text-center animate-fade-in">
-                    <h1 className="mb-4 text-5xl font-bold gradient-text md:text-6xl">
-                        UAE Winter Tales
-                    </h1>
-                    <p className="mb-2 text-xl text-gray-700">
-                        🇦🇪 حكايات الشتاء الإماراتية 🦅
-                    </p>
-                    <p className="mx-auto max-w-2xl text-lg text-gray-600">
-                        Create educational comic books featuring UAE winter traditions and
-                        cultural values
-                    </p>
-                </div>
-
-                {/* Value Cards */}
-                <div className="mb-8">
-                    <h2 className="mb-6 text-center text-3xl font-bold text-gray-800">
-                        Choose a Value
-                    </h2>
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                        {VALUES.map((value, index) => (
-                            <button
-                                key={value.id}
-                                onClick={() => handleValueSelect(value.id)}
-                                className="card-hover group relative overflow-hidden rounded-2xl bg-white p-6 shadow-lg transition-smooth hover:shadow-2xl"
-                                style={{
-                                    animationDelay: `${index * 0.1}s`,
-                                }}
-                            >
-                                {/* Icon */}
-                                <div className="mb-4 text-6xl transition-transform group-hover:scale-110">
-                                    {value.icon}
-                                </div>
-
-                                {/* Title */}
-                                <h3 className="mb-2 text-2xl font-bold text-gray-800">
-                                    {value.name}
-                                </h3>
-                                <p className="mb-3 font-amiri text-lg text-gray-600">
-                                    {value.nameAr}
-                                </p>
-
-                                {/* Description */}
-                                <p className="text-sm text-gray-600">{value.description}</p>
-
-                                {/* Gradient Bar */}
-                                <div
-                                    className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${value.color}`}
-                                />
-                            </button>
-                        ))}
+            {/* Content */}
+            <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 py-12">
+                {/* Logo/Icon */}
+                <div className="mb-8 animate-float">
+                    <div className="w-24 h-24 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-2xl shadow-yellow-500/50">
+                        <Train className="w-12 h-12 text-white" strokeWidth={2.5} />
                     </div>
                 </div>
 
-                {/* Surprise Me Button */}
-                <div className="text-center">
-                    <button
-                        onClick={handleSurpriseMe}
-                        className="rounded-full bg-gradient-to-r from-desert-gold to-winter-blue px-8 py-4 text-lg font-bold text-white shadow-lg transition-smooth hover:scale-105 hover:shadow-xl"
+                {/* Title */}
+                <h1 className="text-6xl md:text-8xl font-bold text-white text-center mb-6 animate-fade-in">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 via-pink-300 to-purple-300">
+                        Mirbad Express
+                    </span>
+                </h1>
+
+                {/* Subtitle */}
+                <p className="text-2xl md:text-3xl text-blue-100 text-center mb-4 animate-fade-in font-medium" style={{ animationDelay: '0.2s' }}>
+                    Adventures to the Ski Point
+                </p>
+
+                {/* Description */}
+                <p className="text-lg md:text-xl text-blue-200 text-center max-w-2xl mb-12 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+                    Embark on a magical journey where <span className="font-bold text-yellow-300">YOU</span> become the hero of your own story.
+                    Choose your values, shape your character, and travel on the legendary Mirbad Express train.
+                </p>
+
+                {/* CTA Button */}
+                <div className="animate-fade-in" style={{ animationDelay: '0.6s' }}>
+                    <Button
+                        onClick={() => router.push('/journey')}
+                        variant="primary"
+                        size="xl"
+                        className="group"
                     >
-                        ✨ Surprise Me! ✨
-                    </button>
+                        <Sparkles className="w-8 h-8 group-hover:rotate-12 transition-transform" />
+                        Start Your Journey
+                        <Sparkles className="w-8 h-8 group-hover:-rotate-12 transition-transform" />
+                    </Button>
                 </div>
 
-                {/* Features Section */}
-                <div className="mt-16 grid grid-cols-1 gap-8 md:grid-cols-3">
-                    <div className="rounded-xl bg-white/50 p-6 text-center backdrop-blur-sm">
-                        <div className="mb-3 text-4xl">🎨</div>
-                        <h3 className="mb-2 text-xl font-bold text-gray-800">
-                            AI-Generated Art
-                        </h3>
-                        <p className="text-sm text-gray-600">
-                            Beautiful comic panels created with advanced AI technology
-                        </p>
+                {/* Features */}
+                <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl animate-fade-in" style={{ animationDelay: '0.8s' }}>
+                    <div className="text-center group">
+                        <div className="mb-4 inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 transition-all duration-300 group-hover:scale-110 group-hover:bg-white/20">
+                            <BookOpen className="w-8 h-8 text-yellow-300" />
+                        </div>
+                        <h3 className="text-xl font-bold text-white mb-2">Personalized Stories</h3>
+                        <p className="text-blue-200 text-sm">You are the main character in every adventure</p>
                     </div>
-
-                    <div className="rounded-xl bg-white/50 p-6 text-center backdrop-blur-sm">
-                        <div className="mb-3 text-4xl">📚</div>
-                        <h3 className="mb-2 text-xl font-bold text-gray-800">
-                            Educational Stories
-                        </h3>
-                        <p className="text-sm text-gray-600">
-                            18+ pre-written stories teaching important UAE values
-                        </p>
+                    <div className="text-center group">
+                        <div className="mb-4 inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 transition-all duration-300 group-hover:scale-110 group-hover:bg-white/20">
+                            <Palette className="w-8 h-8 text-pink-300" />
+                        </div>
+                        <h3 className="text-xl font-bold text-white mb-2">Beautiful Art</h3>
+                        <p className="text-blue-200 text-sm">Studio Ghibli-inspired AI-generated illustrations</p>
                     </div>
-
-                    <div className="rounded-xl bg-white/50 p-6 text-center backdrop-blur-sm">
-                        <div className="mb-3 text-4xl">🦅</div>
-                        <h3 className="mb-2 text-xl font-bold text-gray-800">
-                            Cultural Heritage
-                        </h3>
-                        <p className="text-sm text-gray-600">
-                            Authentic Emirati traditions and winter celebrations
-                        </p>
+                    <div className="text-center group">
+                        <div className="mb-4 inline-flex items-center justify-center w-16 h-16 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 transition-all duration-300 group-hover:scale-110 group-hover:bg-white/20">
+                            <Heart className="w-8 h-8 text-purple-300" />
+                        </div>
+                        <h3 className="text-xl font-bold text-white mb-2">Learn Values</h3>
+                        <p className="text-blue-200 text-sm">Stories teaching courage, kindness, and more</p>
                     </div>
                 </div>
-            </main>
+            </div>
         </div>
     );
 }

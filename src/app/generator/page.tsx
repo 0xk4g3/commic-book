@@ -1,21 +1,25 @@
 'use client';
 
-import { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowLeft, Wand2 } from 'lucide-react';
 import { StoryValue, Story } from '@/types/story';
 import { VALUES } from '@/constants/values';
-import { getStoriesForValue, getRandomStoryForValue, STORY_PROMPTS } from '@/lib/storyHelpers';
+import { getStoriesForValue, getRandomStoryForValue, STORY_PROMPTS, FIXED_CHARACTERS } from '@/lib/storyHelpers';
 import { storyGenerator } from '@/lib/storyGenerator';
 import { GeneratedPanel, Comic } from '@/types/comic';
 import Header from '@/components/Header';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ErrorMessage from '@/components/ErrorMessage';
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
 
 function GeneratorContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const valueId = searchParams.get('value') as StoryValue;
+    const userName = searchParams.get('name') || '';
+    const userGender = searchParams.get('gender') as 'male' | 'female' || 'male';
 
     const [stories, setStories] = useState<Story[]>([]);
     const [selectedStory, setSelectedStory] = useState<Story | null>(null);
@@ -23,29 +27,60 @@ function GeneratorContent() {
     const [progress, setProgress] = useState(0);
     const [error, setError] = useState<string | null>(null);
     const [generatedPanels, setGeneratedPanels] = useState<GeneratedPanel[]>([]);
+    const hasStartedGeneration = React.useRef(false);
 
-    // Load stories for the selected value
+    // Auto-generate story on load with user's data (only once)
     useEffect(() => {
-        if (valueId) {
-            const valueStories = getStoriesForValue(valueId);
-            setStories(valueStories);
+        if (valueId && userName && !hasStartedGeneration.current) {
+            hasStartedGeneration.current = true;
+            // Auto-generate a random story for the selected value
+            const randomStory = getRandomStoryForValue(valueId);
+            if (randomStory) {
+                handleGenerateComic(randomStory);
+            }
         }
-    }, [valueId]);
+    }, [valueId, userName]); // Remove handleGenerateComic from dependencies
 
     const currentValue = VALUES.find((v) => v.id === valueId);
 
+    // Helper function to personalize story with user's data
+    const personalizeStory = (story: Story): Story => {
+        // Use fixed character descriptions from prompts.js
+        const fixedChar = userGender === 'male' ? FIXED_CHARACTERS.MALE : FIXED_CHARACTERS.FEMALE;
+        const characterDescription = fixedChar.description.replace('[User Name]', userName);
+
+        // Create personalized story with user as main character
+        const personalizedStory: Story = {
+            ...story,
+            characters: [
+                {
+                    name: userName,
+                    description: characterDescription
+                },
+                ...story.characters.slice(1) // Keep supporting characters
+            ],
+            setting: `The legendary Mirbad Express train, a luxurious vintage oriental train with ornate Arabic design featuring traditional arabesque patterns, carved wood panels, brass fixtures, rich velvet fabrics in deep jewel tones, and geometric Islamic art motifs. The train is traveling through a beautiful winter landscape on its way to the famous ski point destination. Studio Ghibli art style with magical, whimsical atmosphere.`,
+        };
+
+        return personalizedStory;
+    };
+
+
     const handleGenerateComic = async (story: Story) => {
-        setSelectedStory(story);
+        // Personalize the story with user's data
+        const personalizedStory = personalizeStory(story);
+
+        setSelectedStory(personalizedStory);
         setIsGenerating(true);
         setError(null);
         setGeneratedPanels([]);
         setProgress(0);
 
         try {
-            storyGenerator.validateStory(story);
+            storyGenerator.validateStory(personalizedStory);
 
             const panels = await storyGenerator.generateStoryPanels(
-                story,
+                personalizedStory,
                 (panelIndex, panelData) => {
                     setGeneratedPanels((prev) => [...prev, panelData]);
                     setProgress(((panelIndex + 1) / 4) * 100);
@@ -55,12 +90,12 @@ function GeneratorContent() {
             // Create comic object
             const comic: Comic = {
                 id: `comic_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-                storyId: story.id,
+                storyId: personalizedStory.id,
                 valueId: valueId,
-                title: story.title,
-                titleAr: story.titleAr,
-                characters: story.characters,
-                setting: story.setting,
+                title: `${userName}'s ${personalizedStory.title}`,
+                titleAr: personalizedStory.titleAr,
+                characters: personalizedStory.characters,
+                setting: personalizedStory.setting,
                 panels: panels,
                 createdAt: new Date().toISOString(),
             };
@@ -128,9 +163,9 @@ function GeneratorContent() {
                 {/* Content */}
                 {isGenerating ? (
                     <div className="mx-auto max-w-2xl">
-                        <div className="rounded-2xl bg-white p-8 shadow-xl">
+                        <Card variant="elevated" padding="lg">
                             <h2 className="mb-6 text-center text-2xl font-bold text-gray-800">
-                                Generating Your Comic...
+                                Creating your adventure, {userName}
                             </h2>
 
                             {/* Progress Bar */}
@@ -166,7 +201,7 @@ function GeneratorContent() {
                             )}
 
                             <LoadingSpinner message="Creating beautiful artwork..." />
-                        </div>
+                        </Card>
 
                         {error && (
                             <div className="mt-6">
@@ -185,13 +220,15 @@ function GeneratorContent() {
                     <>
                         {/* Random Story Button */}
                         <div className="mb-8 text-center">
-                            <button
+                            <Button
                                 onClick={handleRandomStory}
-                                className="inline-flex items-center space-x-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 px-8 py-4 text-lg font-bold text-white shadow-lg transition-smooth hover:scale-105 hover:shadow-xl"
+                                variant="primary"
+                                size="lg"
+                                className="bg-gradient-to-r from-purple-600 to-pink-500"
                             >
                                 <Wand2 className="h-6 w-6" />
-                                <span>Generate Random Story</span>
-                            </button>
+                                Generate Random Story
+                            </Button>
                         </div>
 
                         {/* Story Selection */}

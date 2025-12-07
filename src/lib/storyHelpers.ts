@@ -26,4 +26,5 @@ export function getStoryById(storyId: string): Story | null {
 }
 
 // Re-export for convenience
-export { STORY_PROMPTS };
+export { STORY_PROMPTS, FIXED_CHARACTERS } from '../utils/prompts';
+
