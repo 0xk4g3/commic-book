@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowLeft, Wand2 } from 'lucide-react';
 import { StoryValue, Story } from '@/types/story';
@@ -12,7 +12,7 @@ import Header from '@/components/Header';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import ErrorMessage from '@/components/ErrorMessage';
 
-export default function GeneratorPage() {
+function GeneratorContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const valueId = searchParams.get('value') as StoryValue;
@@ -233,5 +233,13 @@ export default function GeneratorPage() {
                 )}
             </main>
         </div>
+    );
+}
+
+export default function GeneratorPage() {
+    return (
+        <Suspense fallback={<LoadingSpinner message="Loading generator..." />}>
+            <GeneratorContent />
+        </Suspense>
     );
 }

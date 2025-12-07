@@ -1,16 +1,15 @@
 import type { Metadata } from 'next';
-import { NextFont } from 'next/dist/compiled/@next/font';
 import { Tajawal, Amiri } from 'next/font/google';
 import './globals.css';
 
-const tajawal: NextFont = Tajawal({
+const tajawal = Tajawal({
     weight: ['300', '400', '500', '700', '800'],
     subsets: ['arabic', 'latin'],
     variable: '--font-tajawal',
     display: 'swap',
 });
 
-const amiri: NextFont = Amiri({
+const amiri = Amiri({
     weight: ['400', '700'],
     subsets: ['arabic', 'latin'],
     variable: '--font-amiri',
