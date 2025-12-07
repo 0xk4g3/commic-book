@@ -1,0 +1,267 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base Styles */
+@layer base {
+    body {
+        @apply bg-uae-ivory font-tajawal;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-tajawal font-bold;
+    }
+
+    * {
+        @apply box-border;
+    }
+}
+
+/* Component Styles */
+@layer components {
+
+    /* Card Component */
+    .value-card {
+        @apply relative overflow-hidden rounded-2xl p-6 cursor-pointer transform transition-all duration-300 ease-out hover:scale-105 hover:shadow-2xl bg-gradient-to-br shadow-lg;
+    }
+
+    .value-card::before {
+        content: '';
+        @apply absolute inset-0 bg-white opacity-0 transition-opacity duration-300;
+    }
+
+    .value-card:hover::before {
+        @apply opacity-10;
+    }
+
+    /* Button Styles */
+    .btn-primary {
+        @apply px-6 py-3 rounded-lg font-semibold text-white bg-gradient-to-r from-desert-gold to-winter-blue hover:from-desert-light hover:to-winter-sky transform transition-all duration-200 hover:scale-105 shadow-md hover:shadow-lg active:scale-95;
+    }
+
+    .btn-secondary {
+        @apply px-6 py-3 rounded-lg font-semibold bg-white text-winter-blue border-2 border-winter-blue hover:bg-winter-blue hover:text-white transform transition-all duration-200 hover:scale-105 shadow-md;
+    }
+
+    /* Panel Styles */
+    .comic-panel {
+        @apply relative rounded-xl overflow-hidden border-4 border-gray-800 shadow-2xl bg-white transform transition-all duration-300 hover:scale-105 hover:shadow-xl;
+    }
+
+    .comic-panel-number {
+        @apply absolute top-4 left-4 w-10 h-10 bg-gradient-to-br from-desert-gold to-desert-light rounded-full flex items-center justify-center font-bold text-white shadow-lg z-10 border-2 border-white;
+    }
+
+    /* Loading Spinner */
+    .spinner {
+        @apply w-16 h-16 border-4 border-desert-light border-t-winter-blue rounded-full animate-spin;
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+        @apply h-3 bg-gray-200 rounded-full overflow-hidden;
+    }
+
+    .progress-fill {
+        @apply h-full bg-gradient-to-r from-desert-gold via-winter-blue to-uae-crimson transition-all duration-500 ease-out;
+    }
+}
+
+/* Custom Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes panelReveal {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+/* Utility Classes */
+.animate-shimmer {
+    animation: shimmer 2s infinite linear;
+    background: linear-gradient(to right,
+            #f3f4f6 0%,
+            #e5e7eb 20%,
+            #f3f4f6 40%,
+            #f3f4f6 100%);
+    background-size: 1000px 100%;
+}
+
+.text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-desert-gold via-winter-blue to-uae-crimson;
+}
+
+/* Comic Book Grid Layout */
+.comic-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    padding: 2rem;
+}
+
+@media (max-width: 768px) {
+    .comic-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 1rem;
+    }
+}
+
+/* Arabic Text Support */
+[dir="rtl"] {
+    @apply font-amiri;
+}
+
+.arabic-text {
+    @apply font-amiri text-right;
+    direction: rtl;
+}
+
+/* Decorative Patterns */
+.pattern-background {
+    background-image:
+        repeating-linear-gradient(45deg,
+            transparent,
+            transparent 10px,
+            rgba(201, 169, 97, 0.03) 10px,
+            rgba(201, 169, 97, 0.03) 20px);
+}
+
+/* Scroll Behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Selection Colors */
+::selection {
+    @apply bg-desert-gold text-white;
+}
+
+::-moz-selection {
+    @apply bg-desert-gold text-white;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-uae-ivory;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-gradient-to-b from-desert-gold to-winter-blue rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    @apply from-desert-light to-winter-sky;
+}
+
+/* Print Styles for PDF */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    .comic-panel {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    body {
+        @apply bg-white;
+    }
+}
+
+/* Accessibility */
+.focus-visible:focus {
+    @apply outline-none ring-4 ring-desert-gold ring-opacity-50;
+}
+
+/* Loading State */
+.loading-skeleton {
+    @apply animate-shimmer bg-gray-200 rounded;
+}
+
+/* Error State */
+.error-message {
+    @apply bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded;
+}
+
+.success-message {
+    @apply bg-green-50 border-l-4 border-green-500 text-green-700 p-4 rounded;
+}
+
+/* Winter Theme Decorations */
+.winter-decoration {
+    position: relative;
+}
+
+.winter-decoration::after {
+    content: '❄️';
+    position: absolute;
+    opacity: 0.1;
+    font-size: 4rem;
+    pointer-events: none;
+}
+
+/* Responsive Typography */
+@media (max-width: 640px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 1024px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+@media (min-width: 1536px) {
+    html {
+        font-size: 18px;
+    }
+}
