@@ -136,29 +136,19 @@ function GeneratorContent() {
             <Header currentPage="generator" />
 
             <main className="container mx-auto px-4 py-8">
-                {/* Back Button */}
-                <button
-                    onClick={() => router.push('/')}
-                    className="mb-6 flex items-center space-x-2 text-gray-600 transition-smooth hover:text-gray-800"
-                    disabled={isGenerating}
-                >
-                    <ArrowLeft className="h-5 w-5" />
-                    <span>Back to Values</span>
-                </button>
-
-                {/* Value Header */}
-                <div className="mb-8 text-center">
-                    <div className="mb-4 text-6xl">{currentValue.icon}</div>
-                    <h1 className="mb-2 text-4xl font-bold text-gray-800">
-                        {currentValue.name}
-                    </h1>
-                    <p className="mb-3 font-amiri text-2xl text-gray-600">
-                        {currentValue.nameAr}
-                    </p>
-                    <p className="mx-auto max-w-2xl text-lg text-gray-600">
-                        {currentValue.description}
-                    </p>
-                </div>
+                {error && (
+                    <div className="mb-6">
+                        <ErrorMessage
+                            message={error}
+                            onRetry={() => {
+                                const randomStory = getRandomStoryForValue(valueId);
+                                if (randomStory) {
+                                    handleGenerateComic(randomStory);
+                                }
+                            }}
+                        />
+                    </div>
+                )}
 
                 {/* Content */}
                 {isGenerating ? (
@@ -169,104 +159,57 @@ function GeneratorContent() {
                             </h2>
 
                             {/* Progress Bar */}
-                            <div className="mb-6">
+                            <div className="mb-8">
                                 <div className="mb-2 flex justify-between text-sm text-gray-600">
-                                    <span>Panel {Math.floor(progress / (100 / 4)) || 0} of 4</span>
+                                    <span>Panel {Math.min(generatedPanels.length + 1, 4)} of 4</span>
                                     <span>{Math.round(progress)}%</span>
                                 </div>
-                                <div className="h-4 overflow-hidden rounded-full bg-gray-200">
+                                <div className="h-3 w-full overflow-hidden rounded-full bg-gray-200">
                                     <div
-                                        className="h-full bg-gradient-to-r from-desert-gold to-winter-blue transition-all duration-300"
+                                        className="h-full bg-gradient-to-r from-desert-gold to-winter-blue transition-all duration-500"
                                         style={{ width: `${progress}%` }}
-                                    />
+                                    ></div>
                                 </div>
                             </div>
 
                             {/* Generated Panels Preview */}
                             {generatedPanels.length > 0 && (
-                                <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-                                    {generatedPanels.map((panel) => (
-                                        <div key={panel.number} className="animate-scale-in">
-                                            <img
-                                                src={panel.imageUrl}
-                                                alt={`Panel ${panel.number}`}
-                                                className="h-auto w-full rounded-lg shadow-md"
-                                            />
-                                            <p className="mt-2 text-center text-sm text-gray-600">
-                                                Panel {panel.number}
-                                            </p>
-                                        </div>
-                                    ))}
+                                <div className="mb-6">
+                                    <p className="mb-3 text-center text-sm text-gray-600">
+                                        Generated so far:
+                                    </p>
+                                    <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                                        {generatedPanels.map((panel, index) => (
+                                            <div
+                                                key={panel.number}
+                                                className="overflow-hidden rounded-lg shadow-md"
+                                            >
+                                                <img
+                                                    src={panel.imageUrl}
+                                                    alt={`Panel ${panel.number}`}
+                                                    className="h-auto w-full"
+                                                />
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             )}
 
                             <LoadingSpinner message="Creating beautiful artwork..." />
                         </Card>
-
-                        {error && (
-                            <div className="mt-6">
-                                <ErrorMessage
-                                    message={error}
-                                    onRetry={() => {
-                                        if (selectedStory) {
-                                            handleGenerateComic(selectedStory);
-                                        }
-                                    }}
-                                />
-                            </div>
-                        )}
                     </div>
                 ) : (
-                    <>
-                        {/* Random Story Button */}
-                        <div className="mb-8 text-center">
-                            <Button
-                                onClick={handleRandomStory}
-                                variant="primary"
-                                size="lg"
-                                className="bg-gradient-to-r from-purple-600 to-pink-500"
-                            >
-                                <Wand2 className="h-6 w-6" />
-                                Generate Random Story
-                            </Button>
-                        </div>
-
-                        {/* Story Selection */}
-                        <div>
-                            <h2 className="mb-6 text-center text-2xl font-bold text-gray-800">
-                                Or Choose a Specific Story
+                    <div className="mx-auto max-w-2xl text-center">
+                        <Card variant="elevated" padding="lg">
+                            <h2 className="mb-4 text-2xl font-bold text-gray-800">
+                                Generating your story...
                             </h2>
-
-                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                                {stories.map((story, index) => (
-                                    <div
-                                        key={story.id}
-                                        className="card-hover group overflow-hidden rounded-2xl bg-white p-6 shadow-lg"
-                                        style={{
-                                            animationDelay: `${index * 0.1}s`,
-                                        }}
-                                    >
-                                        <h3 className="mb-2 text-xl font-bold text-gray-800">
-                                            {story.title}
-                                        </h3>
-                                        <p className="mb-4 font-amiri text-lg text-gray-600">
-                                            {story.titleAr}
-                                        </p>
-                                        <p className="mb-4 text-sm text-gray-600">
-                                            {story.description}
-                                        </p>
-
-                                        <button
-                                            onClick={() => handleGenerateComic(story)}
-                                            className="w-full rounded-lg bg-gradient-to-r from-desert-gold to-winter-blue px-4 py-3 font-bold text-white transition-smooth hover:scale-105 hover:shadow-lg"
-                                        >
-                                            Generate This Story
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </>
+                            <p className="text-gray-600">
+                                Please wait while we create your personalized Mirbad Express adventure.
+                            </p>
+                            <LoadingSpinner message="Preparing..." />
+                        </Card>
+                    </div>
                 )}
             </main>
         </div>
