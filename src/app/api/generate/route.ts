@@ -90,11 +90,10 @@ export async function POST(request: NextRequest) {
         console.log(`✅ Panel ${panelNumber} generated successfully`);
         console.log(`🔗 Image URL: ${imageUrl}`);
 
-        // Return the image URL directly instead of downloading it
-        // This bypasses network issues with Azure blob storage
+        // Return the OpenAI URL directly (we'll convert to base64 only for PDF)
         const result: ImageGenerationResponse = {
             success: true,
-            imageUrl: imageUrl, // Use the OpenAI-provided URL directly
+            imageUrl: imageUrl,
         };
 
         return NextResponse.json(result);

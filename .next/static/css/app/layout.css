@@ -744,9 +744,6 @@ video {
 .right-0 {
   right: 0px;
 }
-.right-2 {
-  right: 0.5rem;
-}
 .right-3 {
   right: 0.75rem;
 }
@@ -945,9 +942,6 @@ video {
 }
 .flex-shrink-0 {
   flex-shrink: 0;
-}
-.grow {
-  flex-grow: 1;
 }
 .scale-105 {
   --tw-scale-x: 1.05;
@@ -1199,9 +1193,6 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(0 0 0 / var(--tw-bg-opacity, 1));
 }
-.bg-black\/50 {
-  background-color: rgb(0 0 0 / 0.5);
-}
 .bg-blue-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(239 246 255 / var(--tw-bg-opacity, 1));
@@ -1225,6 +1216,10 @@ video {
 .bg-gray-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));
+}
+.bg-green-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(22 163 74 / var(--tw-bg-opacity, 1));
 }
 .bg-pink-500 {
   --tw-bg-opacity: 1;
@@ -2043,14 +2038,136 @@ body {
     }
 }
 
-/* Print Styles */
+/* Print Styles - Storybook Layout */
 @media print {
-    .no-print {
-        display: none !important;
+
+    /* Remove default browser headers/footers */
+    @page {
+        margin: 1cm;
+        size: A4 portrait;
     }
 
+    /* Hide EVERYTHING by default */
+    * {
+        visibility: hidden !important;
+    }
+
+    /* Show the print-panels container and its children */
+    .print-panels,
+    .print-panels * {
+        visibility: visible !important;
+    }
+
+    /* Hide UI elements */
+    header,
+    button,
+    .no-print,
+    nav,
+    h1:not(.print-title),
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    a {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    /* Force body to white background */
     body {
         background: white !important;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Main container adjustments */
+    main {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* Storybook layout - 2x2 grid with story text */
+    .print-panels {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
+        padding: 15px !important;
+        margin: 0 auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        page-break-inside: avoid !important;
+        position: relative !important;
+    }
+
+    /* Each panel card - image + story text */
+    .print-panels>div {
+        page-break-inside: avoid !important;
+        -moz-column-break-inside: avoid !important;
+             break-inside: avoid !important;
+        background: white !important;
+        padding: 8px !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        border: 2px solid #333 !important;
+        overflow: visible !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    /* Hide download buttons and hover overlays */
+    .print-panels button,
+    .print-panels svg {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    /* Show the images */
+    .print-panels img {
+        display: block !important;
+        visibility: visible !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        height: auto !important;
+        page-break-inside: avoid !important;
+        margin: 0 0 8px 0 !important;
+        padding: 0 !important;
+        border: none !important;
+    }
+
+    /* SHOW the scene descriptions as story text */
+    .print-panels div[class*="bg-gradient"] {
+        background: none !important;
+        background-color: transparent !important;
+        position: static !important;
+        padding: 4px 8px !important;
+        border-radius: 0 !important;
+        display: block !important;
+        visibility: visible !important;
+    }
+
+    .print-panels div[class*="bg-gradient"] p {
+        color: #333 !important;
+        font-size: 9pt !important;
+        line-height: 1.3 !important;
+        text-align: left !important;
+        font-family: Georgia, serif !important;
+        display: block !important;
+        visibility: visible !important;
+        margin: 0 !important;
+        font-weight: normal !important;
+    }
+
+    /* Remove all shadows and effects */
+    * {
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    /* Add panel numbers for storybook feel */
+    .print-panels>div::before {
+        content: "" !important;
+        display: none !important;
     }
 }
 
@@ -2128,6 +2245,11 @@ body {
 .hover\:bg-gray-300:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(209 213 219 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-green-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(21 128 61 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:bg-purple-700:hover {

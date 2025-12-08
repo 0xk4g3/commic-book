@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Download, Save, ArrowLeft, ZoomIn, FileDown } from 'lucide-react';
+import { Download, Save, ArrowLeft, ZoomIn, Mail } from 'lucide-react';
 import jsPDF from 'jspdf';
 import JSZip from 'jszip';
 
@@ -33,69 +33,7 @@ const PanelViewer = ({ comic, onBack, onSave }) => {
         link.click();
     };
 
-    // Download as PDF
-    const downloadAsPDF = async () => {
-        const pdf = new jsPDF({
-            orientation: 'portrait',
-            unit: 'mm',
-            format: 'a4'
-        });
 
-        const pageWidth = pdf.internal.pageSize.getWidth();
-        const pageHeight = pdf.internal.pageSize.getHeight();
-        const margin = 10;
-        const imageWidth = pageWidth - (margin * 2);
-        const imageHeight = imageWidth; // Square panels
-
-        // Add title page
-        pdf.setFontSize(24);
-        pdf.setTextColor(44, 95, 111); // winter-blue
-        pdf.text(comic.title, pageWidth / 2, 30, { align: 'center' });
-
-        pdf.setFontSize(14);
-        pdf.setTextColor(100, 100, 100);
-        pdf.text(`Value: ${comic.valueId}`, pageWidth / 2, 45, { align: 'center' });
-        pdf.text(`Created: ${new Date(comic.createdAt).toLocaleDateString()}`, pageWidth / 2, 55, { align: 'center' });
-
-        // Add each panel
-        for (let i = 0; i < comic.panels.length; i++) {
-            if (i > 0) {
-                pdf.addPage();
-            } else {
-                pdf.addPage();
-            }
-
-            const panel = comic.panels[i];
-
-            // Add panel image
-            try {
-                pdf.addImage(
-                    panel.imageUrl,
-                    'PNG',
-                    margin,
-                    margin,
-                    imageWidth,
-                    imageHeight
-                );
-
-                // Add panel number
-                pdf.setFontSize(16);
-                pdf.setTextColor(201, 169, 97); // desert-gold
-                pdf.text(`Panel ${panel.number}`, margin, imageHeight + margin + 10);
-
-                // Add scene description
-                pdf.setFontSize(10);
-                pdf.setTextColor(60, 60, 60);
-                const lines = pdf.splitTextToSize(panel.scene, imageWidth);
-                pdf.text(lines, margin, imageHeight + margin + 18);
-            } catch (error) {
-                console.error(`Error adding panel ${i + 1} to PDF:`, error);
-            }
-        }
-
-        // Save PDF
-        pdf.save(`${comic.title.replace(/\s+/g, '_')}.pdf`);
-    };
 
     return (
         <div className="container mx-auto px-4 py-12">
@@ -131,19 +69,13 @@ const PanelViewer = ({ comic, onBack, onSave }) => {
                     <Save className="w-5 h-5" />
                     Save to Library
                 </button>
+
                 <button
-                    onClick={downloadAsPDF}
+                    onClick={() => alert('Email functionality coming soon!')}
                     className="btn-secondary inline-flex items-center gap-2"
                 >
-                    <FileDown className="w-5 h-5" />
-                    Download PDF
-                </button>
-                <button
-                    onClick={downloadAllAsZip}
-                    className="btn-secondary inline-flex items-center gap-2"
-                >
-                    <Download className="w-5 h-5" />
-                    Download ZIP
+                    <Mail className="w-5 h-5" />
+                    Send to Email
                 </button>
             </div>
 
@@ -156,8 +88,7 @@ const PanelViewer = ({ comic, onBack, onSave }) => {
                         style={{ animationDelay: `${index * 100}ms` }}
                         onClick={() => setSelectedPanel(panel)}
                     >
-                        {/* Panel Number */}
-                        <div className="comic-panel-number">{panel.number}</div>
+
 
                         {/* Panel Image */}
                         <img
