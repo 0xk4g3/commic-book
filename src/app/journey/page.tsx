@@ -84,26 +84,26 @@ export default function JourneyPage() {
                                     <button
                                         onClick={() => setGender('male')}
                                         className={`p-6 rounded-2xl border-2 transition-all duration-300 ${gender === 'male'
-                                                ? 'bg-blue-500 border-blue-300 shadow-lg shadow-blue-500/50 scale-105'
-                                                : 'bg-white/10 border-white/30 hover:bg-white/20 hover:scale-105'
+                                            ? 'bg-blue-500 border-blue-300 shadow-lg shadow-blue-500/50 scale-105'
+                                            : 'bg-white/10 border-white/30 hover:bg-white/20 hover:scale-105'
                                             }`}
                                     >
                                         <div className="mb-3 inline-flex items-center justify-center w-14 h-14 rounded-full bg-white/20">
                                             <User className="w-8 h-8 text-white" />
                                         </div>
-                                        <div className="text-white font-bold text-xl">Man</div>
+                                        <div className="text-white font-bold text-xl">Boy</div>
                                     </button>
                                     <button
                                         onClick={() => setGender('female')}
                                         className={`p-6 rounded-2xl border-2 transition-all duration-300 ${gender === 'female'
-                                                ? 'bg-pink-500 border-pink-300 shadow-lg shadow-pink-500/50 scale-105'
-                                                : 'bg-white/10 border-white/30 hover:bg-white/20 hover:scale-105'
+                                            ? 'bg-pink-500 border-pink-300 shadow-lg shadow-pink-500/50 scale-105'
+                                            : 'bg-white/10 border-white/30 hover:bg-white/20 hover:scale-105'
                                             }`}
                                     >
                                         <div className="mb-3 inline-flex items-center justify-center w-14 h-14 rounded-full bg-white/20">
                                             <Users className="w-8 h-8 text-white" />
                                         </div>
-                                        <div className="text-white font-bold text-xl">Woman</div>
+                                        <div className="text-white font-bold text-xl">Girl</div>
                                     </button>
                                 </div>
                             </div>
@@ -141,8 +141,8 @@ export default function JourneyPage() {
                                         key={value.id}
                                         onClick={() => setSelectedValue(value.id)}
                                         className={`p-6 rounded-2xl border-2 transition-all duration-300 text-left ${selectedValue === value.id
-                                                ? 'bg-white/90 border-yellow-400 shadow-lg shadow-yellow-500/50 scale-105'
-                                                : 'bg-white/10 border-white/30 hover:bg-white/20 hover:scale-105'
+                                            ? 'bg-white/90 border-yellow-400 shadow-lg shadow-yellow-500/50 scale-105'
+                                            : 'bg-white/10 border-white/30 hover:bg-white/20 hover:scale-105'
                                             }`}
                                     >
                                         <div className="text-5xl mb-3">{value.icon}</div>

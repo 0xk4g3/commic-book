@@ -101,6 +101,17 @@ export async function POST(request: NextRequest) {
 
     } catch (error: any) {
         console.error('❌ Image generation error:', error.message);
+        console.error('Error details:', {
+            status: error.response?.status,
+            statusText: error.response?.statusText,
+            data: error.response?.data,
+            code: error.code,
+        });
+
+        // Log the prompt that caused the error for debugging
+        if (error.response?.status === 400 || error.response?.status === 500) {
+            console.error('Problematic prompt:', prompt);
+        }
 
         let errorMessage = 'Failed to generate image';
         let statusCode = 500;

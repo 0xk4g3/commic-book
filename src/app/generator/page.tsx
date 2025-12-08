@@ -46,7 +46,7 @@ function GeneratorContent() {
     // Helper function to personalize story with user's data
     const personalizeStory = (story: Story): Story => {
         // Use fixed character descriptions from prompts.js
-        const fixedChar = userGender === 'male' ? FIXED_CHARACTERS.MALE : FIXED_CHARACTERS.FEMALE;
+        const fixedChar = userGender === 'male' ? FIXED_CHARACTERS.BOY : FIXED_CHARACTERS.GIRL;
         const characterDescription = fixedChar.description.replace('[User Name]', userName);
 
         // Create personalized story with user as main character

@@ -24,17 +24,19 @@ export class StoryGeneratorService {
         // Construct the panel prompt with STRICT style consistency requirements
         const prompt = `
 PANEL ${panel.number} OF 4 - MIRBAD EXPRESS TRAIN STORY
+
 Scene: ${panel.scene}
 Characters: ${characterDescriptions}
 Setting: ${story.setting}
 
 VISUAL STYLE REQUIREMENTS (MUST BE IDENTICAL ACROSS ALL 4 PANELS):
-- Art Style: Studio Ghibli anime style, warm and magical atmosphere
-- Character Design: EXACT SAME character appearance in all panels - same face, same hair, same clothing, same proportions
+- Art Style: Studio Ghibli animation style - soft hand-drawn aesthetic, warm and magical atmosphere, expressive character designs, whimsical storytelling
+- Magical Realism: Gentle enchanting atmosphere reminiscent of Spirited Away and Kiki's Delivery Service
+- Character Design: EXACT SAME character appearance in all panels - same face, same hair, same clothing, same proportions. Characters are 12-16 years old with youthful, innocent features
 - Train Interior: Luxurious vintage oriental train with ornate arabesque patterns, carved wood panels, brass fixtures, rich velvet fabrics in deep jewel tones, geometric Islamic art motifs
-- Color Palette: Warm desert tones (amber, gold, terracotta) mixed with rich jewel colors (deep blues, emerald greens, ruby reds), consistent lighting
-- Lighting: Soft warm golden lighting from ornate brass lamps and fixtures
-- Quality: High detail professional anime art, cinematic composition, consistent artistic style
+- Color Palette: Warm desert tones (amber, gold, terracotta) mixed with rich jewel colors (deep blues, emerald greens, ruby reds), consistent soft Ghibli-style lighting
+- Lighting: Soft warm golden lighting from ornate brass lamps and fixtures, creating a dreamy magical atmosphere
+- Quality: High detail professional Studio Ghibli anime art, cinematic composition, consistent artistic style across all panels
 
 ACTION & MOOD:
 - Action: ${panel.action}
@@ -46,9 +48,11 @@ STRICT PROHIBITIONS:
 - NO WORDS or letters visible anywhere in the image
 - NO watermarks, logos, or signatures
 - Visual storytelling only through character expressions and actions
+- Age-appropriate content - characters are young (12-16 years old) on a magical train adventure
 
 Train must show vintage luxury oriental design with Middle Eastern aesthetic, NOT modern metro.
 Winter season atmosphere with cool comfortable weather visible through windows.
+Studio Ghibli magic and wonder throughout.
     `.trim();
 
         return prompt;
