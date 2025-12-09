@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { Download, Save, ArrowLeft, ZoomIn, Mail } from 'lucide-react';
 import jsPDF from 'jspdf';
 import JSZip from 'jszip';
+import EmailModal from './EmailModal';
 
 const PanelViewer = ({ comic, onBack, onSave }) => {
     const [selectedPanel, setSelectedPanel] = useState(null);
+    const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
+    const [isSendingEmail, setIsSendingEmail] = useState(false);
 
     // Download individual panel
     const downloadPanel = (panel) => {
@@ -33,7 +36,171 @@ const PanelViewer = ({ comic, onBack, onSave }) => {
         link.click();
     };
 
+    // Handle sending email
+    const handleSendEmail = async (email) => {
+        setIsSendingEmail(true);
+        try {
+            // Load custom font for Arabic support
+            const fontResponse = await fetch('/fonts/Amiri-Regular.ttf');
+            if (!fontResponse.ok) throw new Error('Failed to load font');
+            const fontBuffer = await fontResponse.arrayBuffer();
+            const fontBase64 = Buffer.from(fontBuffer).toString('base64');
 
+            // Generate PDF
+            const pdf = new jsPDF();
+
+            // Add font
+            pdf.addFileToVFS('Amiri-Regular.ttf', fontBase64);
+            pdf.addFont('Amiri-Regular.ttf', 'Amiri', 'normal');
+            pdf.setFont('Amiri');
+
+            const pageWidth = pdf.internal.pageSize.getWidth();
+            const pageHeight = pdf.internal.pageSize.getHeight();
+            const margin = 20;
+
+            // === COVER PAGE ===
+            // Border
+            pdf.setLineWidth(1);
+            pdf.setDrawColor(30, 58, 138); // Winter blue
+            pdf.rect(margin, margin, pageWidth - (margin * 2), pageHeight - (margin * 2));
+
+            // Inner decorative border
+            pdf.setLineWidth(0.5);
+            pdf.setDrawColor(212, 175, 55); // Gold
+            pdf.rect(margin + 2, margin + 2, pageWidth - (margin * 2) - 4, pageHeight - (margin * 2) - 4);
+
+            // Title
+            pdf.setFontSize(32);
+            pdf.setTextColor(30, 58, 138);
+            pdf.text(comic.title, pageWidth / 2, 80, { align: 'center' });
+
+            // Arabic Title (now supported!)
+            pdf.setFontSize(28);
+            pdf.setTextColor(180, 83, 9); // Desert Gold
+            if (comic.titleAr) {
+                pdf.text(comic.titleAr, pageWidth / 2, 100, { align: 'center' });
+            }
+
+            // Metadata
+            pdf.setFontSize(14);
+            pdf.setTextColor(80);
+            pdf.text(`Created on: ${new Date(comic.createdAt).toLocaleDateString()}`, pageWidth / 2, 130, { align: 'center' });
+
+            pdf.setFontSize(12);
+            pdf.text('A Mirbad Express Original', pageWidth / 2, pageHeight - 40, { align: 'center' });
+
+            // === COMIC PAGES ===
+
+            for (let i = 0; i < comic.panels.length; i++) {
+                const panel = comic.panels[i];
+
+                // One Panel Per Page for Premium Layout
+                pdf.addPage();
+
+                // Page Border
+                pdf.setLineWidth(0.5);
+                pdf.setDrawColor(30, 58, 138);
+                pdf.rect(margin, margin, pageWidth - (margin * 2), pageHeight - (margin * 2));
+
+                // Prepare image data with Proxy
+                let imageData = panel.imageUrl;
+                let format = 'PNG';
+
+                if (!panel.imageUrl.startsWith('data:')) {
+                    try {
+                        const proxyUrl = `/api/proxy-image?url=${encodeURIComponent(panel.imageUrl)}`;
+                        const response = await fetch(proxyUrl);
+                        if (!response.ok) throw new Error('Proxy fetch failed');
+
+                        const blob = await response.blob();
+                        const reader = new FileReader();
+                        imageData = await new Promise((resolve) => {
+                            reader.onloadend = () => resolve(reader.result);
+                            reader.readAsDataURL(blob);
+                        });
+                    } catch (err) {
+                        console.error('Failed to fetch image for PDF:', err);
+                    }
+                }
+
+                if (imageData.startsWith('data:image/')) {
+                    format = imageData.substring(11, imageData.indexOf(';')).toUpperCase();
+                    if (format === 'JPEG') format = 'JPG';
+                }
+
+                // Layout Calculation for Center Alignment
+                const imgWidth = 150; // Larger image for single page
+                const imgHeight = 150;
+                const xPos = (pageWidth - imgWidth) / 2;
+
+                // Approximate vertical center
+                const contentStartY = margin + 30;
+
+                // Draw Image Border
+                pdf.setLineWidth(1.5);
+                pdf.setDrawColor(0); // Black
+                pdf.rect(xPos - 1, contentStartY - 1, imgWidth + 2, imgHeight + 2);
+
+                try {
+                    pdf.addImage(imageData, format, xPos, contentStartY, imgWidth, imgHeight);
+                } catch (addImgErr) {
+                    pdf.text('[Image Failed]', xPos, contentStartY + 75);
+                }
+
+                // Caption
+                const textY = contentStartY + imgHeight + 15;
+                pdf.setFontSize(14); // Slightly larger text
+                pdf.setTextColor(20);
+                pdf.setFont('Amiri', 'normal');
+
+                const text = `Panel ${panel.number}: ${panel.scene}`;
+                const splitText = pdf.splitTextToSize(text, 160); // Wider text block
+                pdf.text(splitText, pageWidth / 2, textY, { align: 'center' });
+            }
+
+            // Add page numbers
+            const pageCount = pdf.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                pdf.setPage(i);
+                pdf.setFontSize(10);
+                pdf.setTextColor(100);
+                pdf.text(`Page ${i} of ${pageCount}`, pageWidth - margin - 20, pageHeight - margin + 5);
+            }
+
+            const pdfBlob = pdf.output('blob');
+
+            // Send to API
+            const formData = new FormData();
+            formData.append('email', email);
+            formData.append('file', pdfBlob, 'comic_book.pdf');
+
+            const response = await fetch('/api/email/send', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.indexOf("application/json") !== -1) {
+                const result = await response.json();
+                if (response.ok) {
+                    alert('Comic sent successfully to your email!');
+                    setIsEmailModalOpen(false);
+                } else {
+                    throw new Error(result.error || 'Failed to send email');
+                }
+            } else {
+                const text = await response.text();
+                console.error("Non-JSON Response:", text);
+                throw new Error(`Server returned unexpected response (Status: ${response.status}). Check console for details.`);
+            }
+
+        } catch (error) {
+            console.error('Email error:', error);
+            alert(`Error sending email: ${error.message}`);
+        } finally {
+            setIsSendingEmail(false);
+        }
+    };
 
     return (
         <div className="container mx-auto px-4 py-12">
@@ -71,7 +238,7 @@ const PanelViewer = ({ comic, onBack, onSave }) => {
                 </button>
 
                 <button
-                    onClick={() => alert('Email functionality coming soon!')}
+                    onClick={() => setIsEmailModalOpen(true)}
                     className="btn-secondary inline-flex items-center gap-2"
                 >
                     <Mail className="w-5 h-5" />
@@ -180,6 +347,14 @@ const PanelViewer = ({ comic, onBack, onSave }) => {
                     </div>
                 </div>
             )}
+
+            {/* Email Modal */}
+            <EmailModal
+                isOpen={isEmailModalOpen}
+                onClose={() => setIsEmailModalOpen(false)}
+                onSend={handleSendEmail}
+                isSending={isSendingEmail}
+            />
         </div>
     );
 };

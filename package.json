@@ -24,8 +24,10 @@
     "jszip": "^3.10.1",
     "lucide-react": "^0.294.0",
     "next": "^14.0.4",
+    "nodemailer": "^7.0.11",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "resend": "^6.5.2",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
