@@ -16,44 +16,78 @@ export class StoryGeneratorService {
         const panel = story.panels[panelIndex];
         const characters = story.characters;
 
-        // Build detailed character descriptions
+        // Extract main character for detailed description
+        const mainChar = characters[0];
+        const charName = mainChar.name;
+
+        // Build all character descriptions
         const characterDescriptions = characters
             .map((char) => `${char.name}: ${char.description}`)
-            .join(', ');
+            .join('\n\n');
 
-        // Construct the panel prompt with STRICT style consistency requirements
-        const prompt = `
-PANEL ${panel.number} OF 4 - MIRBAD EXPRESS TRAIN STORY
+        // Ultra-strong consistency enforcement
+        let prompt = '';
 
-Scene: ${panel.scene}
-Characters: ${characterDescriptions}
-Setting: ${story.setting}
+        if (panelIndex === 0) {
+            // Panel 1: Establish the EXACT character template
+            prompt = `
+Studio Ghibli anime comic panel 1 of 4 - Mirbad Express Train
 
-VISUAL STYLE REQUIREMENTS (MUST BE IDENTICAL ACROSS ALL 4 PANELS):
-- Art Style: Studio Ghibli animation style - soft hand-drawn aesthetic, warm and magical atmosphere, expressive character designs, whimsical storytelling
-- Magical Realism: Gentle enchanting atmosphere reminiscent of Spirited Away and Kiki's Delivery Service
-- Character Design: EXACT SAME character appearance in all panels - same face, same hair, same clothing, same proportions. Characters are 12-16 years old with youthful, innocent features
-- Train Interior: Luxurious vintage oriental train with ornate arabesque patterns, carved wood panels, brass fixtures, rich velvet fabrics in deep jewel tones, geometric Islamic art motifs
-- Color Palette: Warm desert tones (amber, gold, terracotta) mixed with rich jewel colors (deep blues, emerald greens, ruby reds), consistent soft Ghibli-style lighting
-- Lighting: Soft warm golden lighting from ornate brass lamps and fixtures, creating a dreamy magical atmosphere
-- Quality: High detail professional Studio Ghibli anime art, cinematic composition, consistent artistic style across all panels
+⭐ CHARACTER TEMPLATE (USE EXACT FEATURES IN ALL 4 PANELS):
+${characterDescriptions}
 
-ACTION & MOOD:
-- Action: ${panel.action}
-- Emotional Tone: ${panel.mood}
-- Cultural Element: ${panel.tradition}
+SCENE: ${panel.scene}
+SETTING: ${story.setting}
+ACTION: ${panel.action}
+MOOD: ${panel.mood}
 
-STRICT PROHIBITIONS:
-- NO TEXT of any kind - no speech bubbles, no captions, no word balloons, no dialogue boxes
-- NO WORDS or letters visible anywhere in the image
-- NO watermarks, logos, or signatures
-- Visual storytelling only through character expressions and actions
-- Age-appropriate content - characters are young (12-16 years old) on a magical train adventure
+VISUAL REQUIREMENTS:
+- Studio Ghibli style: soft colors, warm lighting, expressive faces, magical atmosphere
+- Main character ${charName}: Use EXACT features listed above - same hair color/style, same eye color, same face shape, same clothing colors
+- Train interior: green velvet seats, plain beige carpet, wooden panels, warm golden lighting
+- Art quality: High detail Ghibli animation style
 
-Train must show vintage luxury oriental design with Middle Eastern aesthetic, NOT modern metro.
-Winter season atmosphere with cool comfortable weather visible through windows.
-Studio Ghibli magic and wonder throughout.
+CRITICAL - REMEMBER FOR NEXT PANELS:
+- ${charName}'s exact facial features, hair, clothing colors
+- Same art style and color palette
+- Same character proportions and age appearance
+
+NO text, speech bubbles, or words in image.
+Winter landscape outside windows.
     `.trim();
+        } else {
+            // Panels 2-4: COPY EXACT character from Panel 1
+            prompt = `
+Studio Ghibli anime comic panel ${panel.number} of 4 - Mirbad Express Train
+
+🔒 CRITICAL - CHARACTER CONSISTENCY:
+USE THE EXACT SAME CHARACTER FROM PANEL 1. Copy these EXACT features:
+
+${characterDescriptions}
+
+⚠️ ${charName} MUST BE IDENTICAL TO PANEL 1:
+- Same exact hair color and hairstyle
+- Same exact eye color and size  
+- Same exact face shape and features
+- Same exact clothing (same hoodie color, same jeans, same boots)
+- Same exact age appearance (13-14 years old)
+- DO NOT change anything about ${charName}'s appearance
+
+SCENE: ${panel.scene}
+SETTING: ${story.setting}
+ACTION: ${panel.action}
+MOOD: ${panel.mood}
+
+VISUAL REQUIREMENTS:
+- Studio Ghibli style: SAME as Panel 1 - soft colors, warm lighting, expressive faces
+- Train interior: green velvet seats, plain beige carpet, wooden panels
+- ${charName}: COPY from Panel 1 - identical appearance
+- Art quality: High detail Ghibli style, CONSISTENT with Panel 1
+
+NO text, speech bubbles, or words in image.
+Winter landscape outside windows.
+    `.trim();
+        }
 
         return prompt;
     }

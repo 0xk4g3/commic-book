@@ -26,6 +26,9 @@ function checkRateLimit(ip: string): boolean {
 }
 
 export async function POST(request: NextRequest) {
+    let body: ImageGenerationRequest | null = null;
+    let prompt: string | null = null;
+
     try {
         // Get client IP for rate limiting
         const ip = request.headers.get('x-forwarded-for') || 'unknown';
@@ -48,8 +51,9 @@ export async function POST(request: NextRequest) {
         }
 
         // Parse and validate request body
-        const body: ImageGenerationRequest = await request.json();
-        const { prompt, panelNumber } = body;
+        body = await request.json();
+        prompt = body!.prompt;
+        const { panelNumber } = body!;
 
         if (!prompt || typeof prompt !== 'string') {
             return NextResponse.json(
@@ -109,7 +113,8 @@ export async function POST(request: NextRequest) {
 
         // Log the prompt that caused the error for debugging
         if (error.response?.status === 400 || error.response?.status === 500) {
-            console.error('Problematic prompt:', prompt);
+            console.error('Problematic prompt:', prompt || body?.prompt || 'unknown');
+            console.error('Prompt length:', prompt?.length || body?.prompt?.length || 0);
         }
 
         let errorMessage = 'Failed to generate image';

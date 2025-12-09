@@ -7,11 +7,11 @@
 export const FIXED_CHARACTERS = {
     GIRL: {
         name: '[User Name]',
-        description: 'A friendly 12-16 year old girl with long dark hair and bright expressive eyes, wearing a comfortable modest winter outfit: thick warm knit sweater, long winter pants, waterproof winter coat, wool scarf around neck, and warm winter boots. Traveling on the Mirbad Express train towards the ski point destination, with a determined and adventurous expression. Studio Ghibli animation style with soft hand-drawn aesthetic, expressive character design, magical realism atmosphere, consistent appearance across all panels.',
+        description: '13-14 year old girl in anime/manga style. EXACT HAIR: shoulder-length wavy dark brown hair with soft natural shine, gentle waves, side-parted bangs. EXACT FACE: large expressive brown eyes (typical anime style), round youthful friendly face, small upturned nose, rosy fair skin with slight blush on cheeks, warm genuine smile. EXACT OUTFIT: solid navy blue hoodie (plain, no logos or patterns), dark blue jeans, brown lace-up ankle boots. BODY TYPE: average height, slender teenage build. STYLE: Clean anime character design with detailed features.',
     },
     BOY: {
         name: '[User Name]',
-        description: 'A friendly 12-16 year old boy with short dark hair and bright expressive eyes, wearing a comfortable modest winter outfit: thick warm knit sweater, long winter pants, waterproof winter coat, wool scarf around neck, and warm winter boots. Traveling on the Mirbad Express train towards the ski point destination, with a determined and adventurous expression. Studio Ghibli animation style with soft hand-drawn aesthetic, expressive character design, magical realism atmosphere, consistent appearance across all panels.',
+        description: '13-14 year old boy in anime/manga style. EXACT HAIR: short dark brown hair with neat cut, slightly tousled on top, natural texture. EXACT FACE: large expressive brown eyes (typical anime style), round friendly youthful face, small nose, fair skin with healthy complexion, warm cheerful smile. EXACT OUTFIT: solid olive green hoodie (plain, no logos or patterns), dark blue jeans, brown lace-up ankle boots. BODY TYPE: average height, slim teenage build. STYLE: Clean anime character design with detailed features.',
     },
 };
 
@@ -25,11 +25,11 @@ export const STORY_PROMPTS = {
             characters: [
                 {
                     name: 'Protagonist',
-                    description: 'A 12-16 year old child wearing comfortable winter clothing (warm sweater, long pants, winter coat, scarf), traveling on the Mirbad Express train towards the ski point. Studio Ghibli animation style with expressive features and magical atmosphere',
+                    description: 'Main character, ages 12-16, plain modern casual clothes, friendly',
                 },
                 {
-                    name: 'Wise Conductor',
-                    description: 'An experienced elderly train conductor with kind eyes, wearing a distinguished uniform',
+                    name: 'Friendly Young Conductor',
+                    description: '22-24 year old male train conductor in anime/manga style. EXACT HAIR: short neat black hair, professional style. EXACT FACE: large friendly brown eyes (anime style), mature but youthful face, clean-shaven, warm welcoming smile, light skin. EXACT UNIFORM: pristine dark navy blue conductor jacket with shiny gold buttons down the front, gold shoulder epaulettes with fringe details, crisp white dress shirt underneath, navy blue peaked conductor cap with polished gold train emblem badge on front, black dress pants, black polished shoes. POSTURE: Professional and friendly, confident stance. STYLE: Detailed anime character design.',
                 },
             ],
             setting: 'A brave journey on the Mirbad Express train. The train crosses scary mountain bridges on the way to the snowy ski point. With help from a kind conductor, the young traveler finds courage and becomes a confident adventurer.',
@@ -75,11 +75,11 @@ export const STORY_PROMPTS = {
             characters: [
                 {
                     name: 'Protagonist',
-                    description: 'A 12-16 year old child wearing comfortable winter clothing (warm sweater, long pants, winter coat, scarf), traveling on the Mirbad Express train towards the ski point. Studio Ghibli animation style with expressive features and magical atmosphere',
+                    description: 'Main character, ages 12-16, plain modern casual clothes, friendly',
                 },
                 {
                     name: 'Elderly Passenger',
-                    description: 'A kind elderly person, looking tired from the journey',
+                    description: 'Kind elderly person, warm friendly face, needs help with bags',
                 },
             ],
             setting: 'A kind story on the Mirbad Express. An old person needs help with their bags. A caring young traveler helps them and they share warm tea and stories as the train travels through the snow to the ski point.',
@@ -125,11 +125,11 @@ export const STORY_PROMPTS = {
             characters: [
                 {
                     name: 'Protagonist',
-                    description: 'A 12-16 year old child wearing comfortable winter clothing (warm sweater, long pants, winter coat, scarf), traveling on the Mirbad Express train towards the ski point. Studio Ghibli animation style with expressive features and magical atmosphere',
+                    description: 'Main character, ages 12-16, plain modern casual clothes, friendly',
                 },
                 {
                     name: 'Fellow Traveler',
-                    description: 'Another passenger who is discouraged by delays',
+                    description: 'Friendly passenger discouraged by delays',
                 },
             ],
             setting: 'A story about not giving up on the Mirbad Express. Heavy snow stops the train on the way to the ski point. One traveler stays positive and cheers up the other passengers until the train can go again.',
@@ -175,11 +175,11 @@ export const STORY_PROMPTS = {
             characters: [
                 {
                     name: 'Protagonist',
-                    description: 'A 12-16 year old child wearing comfortable winter clothing (warm sweater, long pants, winter coat, scarf), traveling on the Mirbad Express train towards the ski point. Studio Ghibli animation style with expressive features and magical atmosphere',
+                    description: 'Main character, ages 12-16, plain modern casual clothes, friendly',
                 },
                 {
                     name: 'Quiet Zone Passenger',
-                    description: 'A passenger trying to rest in the quiet section of the train',
+                    description: 'Friendly passenger resting, peaceful and kind',
                 },
             ],
             setting: 'A lesson in respect on the Mirbad Express. In the quiet area of the train, a thoughtful passenger makes sure to be quiet so others can rest on the way to the ski point.',
@@ -225,11 +225,11 @@ export const STORY_PROMPTS = {
             characters: [
                 {
                     name: 'Protagonist',
-                    description: 'A 12-16 year old child wearing comfortable winter clothing (warm sweater, long pants, winter coat, scarf), traveling on the Mirbad Express train towards the ski point. Studio Ghibli animation style with expressive features and magical atmosphere',
+                    description: 'Main character, ages 12-16, plain modern casual clothes, friendly',
                 },
                 {
                     name: 'International Travelers',
-                    description: 'A group of travelers from different cultures and backgrounds',
+                    description: 'Friendly travelers from different cultures, welcoming smiles',
                 },
             ],
             setting: 'A celebration of differences on the Mirbad Express. Travelers from many countries come together. They share stories, food, and customs as the train goes to the ski point. They all become friends.',
@@ -275,11 +275,11 @@ export const STORY_PROMPTS = {
             characters: [
                 {
                     name: 'Protagonist',
-                    description: 'A 12-16 year old child wearing comfortable winter clothing (warm sweater, long pants, winter coat, scarf), traveling on the Mirbad Express train towards the ski point. Studio Ghibli animation style with expressive features and magical atmosphere',
+                    description: 'Main character, ages 12-16, plain modern casual clothes, friendly',
                 },
                 {
                     name: 'Bored Children',
-                    description: 'A group of young children who are restless during the long journey',
+                    description: 'Friendly young children, cheerful faces, restless during journey',
                 },
             ],
             setting: 'A creative story on the Mirbad Express. During the long trip to the ski point, bored kids get restless. One clever traveler tells exciting stories about the mountains and makes everyone happy.',

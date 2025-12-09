@@ -59,7 +59,7 @@ function GeneratorContent() {
                 },
                 ...story.characters.slice(1) // Keep supporting characters
             ],
-            setting: `The legendary Mirbad Express train, a luxurious vintage oriental train with ornate Arabic design featuring traditional arabesque patterns, carved wood panels, brass fixtures, rich velvet fabrics in deep jewel tones, and geometric Islamic art motifs. The train is traveling through a beautiful winter landscape on its way to the famous ski point destination. Studio Ghibli art style with magical, whimsical atmosphere.`,
+            setting: `Mirbad Express train to ski point. Green seats, simple plain carpet, clean interior, warm lighting. Winter landscape. Studio Ghibli style.`,
         };
 
         return personalizedStory;
